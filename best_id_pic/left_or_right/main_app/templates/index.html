@@ -1,0 +1,134 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Best Id Card Picture </title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 50px;
+            flex-grow: 1;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        .img-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        img {
+            width: 100px;
+            height: auto;
+            border: 5px solid #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        img:hover {
+            transform: scale(1.1);
+        }
+
+        .or-text {
+            margin: 0 20px;
+            font-size: 18px;
+        }
+
+        a {
+            color: thistle;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <center class="center">
+        <h1>VOTE FOR 2024 MVGR BATCH BEST ID CARD PIC</h1>
+        <h3>Right or left &#128513;</h3>
+        <form id="vote-form" method="post" action="{% url 'vote' %}">
+            {% csrf_token %}
+            <input type="hidden" name="selected_image" value="">
+            <div class="img-container">
+                <img src="{% static 'images/' %}{{ p1 }}" alt="Image 1" onclick="submitForm('{{ p1 }}')">
+                <div class="or-text">OR</div>
+                <img src="{% static 'images/' %}{{ p2 }}" alt="Image 2" onclick="submitForm('{{ p2 }}')">
+            </div>
+        </form>
+        <h3><a href="{% url 'votes_table' %}">Show Votes</a></h3>
+    </center>
+
+    <footer>
+        <h4>DISCLAIMER!</h4>
+        <p>This is a fun project inspired from the movie "the social network" you like it or not ? tell us what you
+            think!</p>
+    </footer>
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function submitForm(selectedImage) {
+            // Set the value of the hidden input field to the selected image
+            document.querySelector('[name="selected_image"]').value = selectedImage;
+            // Get the CSRF token value from the cookie
+            const csrftoken = getCookie('csrftoken');
+            // Include the CSRF token in the form submission
+            const form = document.getElementById('vote-form');
+            const csrfInput = document.createElement('input');
+            csrfInput.setAttribute('type', 'hidden');
+            csrfInput.setAttribute('name', 'csrfmiddlewaretoken');
+            csrfInput.setAttribute('value', csrftoken);
+            form.appendChild(csrfInput);
+            // Submit the form
+            form.submit();
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Best Id Card Picture </title>
+</head>
+
+<body>
+    <h1>Vote for Your Favorite Image</h1>
+    <form action="/vote" method="post">
+        <img src="{{ url_for('static', filename='images/' + image1) }}" alt="Image 1">
+        <img src="{{ url_for('static', filename='images/' + image2) }}" alt="Image 2">
+        <input type="hidden" name="voted_image" value="{{ image1 }}">
+        <input type="hidden" name="voted_image" value="{{ image2 }}">
+    </form>
+</body>
+
+</html>
